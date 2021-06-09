@@ -1,0 +1,6 @@
+for i in i + 1 
+do
+
+puts i;
+
+end

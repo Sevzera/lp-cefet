@@ -1,11 +1,11 @@
-package code.syntatic;
+package syntatic;
 
 import java.io.IOException;
 
-import code.lexical.Lexeme;
-import code.lexical.LexicalAnalysis;
-import code.lexical.LexicalException;
-import code.lexical.TokenType;
+import lexical.Lexeme;
+import lexical.LexicalAnalysis;
+import lexical.LexicalException;
+import lexical.TokenType;
 
 
 public class SyntaticAnalysis {
@@ -340,7 +340,7 @@ public class SyntaticAnalysis {
 			showError();
 		}
 
-		if (current.type == TokenType.POINT) {
+		if (current.type == TokenType.DOT) {
 			procFunction();
 		}
 
@@ -411,7 +411,7 @@ public class SyntaticAnalysis {
 
 	// <function> ::= '.' ( length| to_i| to_s )
 	private void procFunction() throws LexicalException, IOException {
-		eat(TokenType.POINT);
+		eat(TokenType.DOT);
 
 		if (current.type == TokenType.LENGTH) {
 			advance();

@@ -1,6 +1,6 @@
 /* Class to create a map of all command and important stuff used on the program */
 
-package code.lexical;
+package lexical;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -62,7 +62,7 @@ public class SymbolTable {
 		st.put("[", TokenType.SQR_BRACKETS_OP);
 		st.put("]", TokenType.SQR_BRACKETS_CL);
 		st.put(",", TokenType.COMMA);
-		st.put(".", TokenType.POINT);
+		st.put(".", TokenType.DOT);
 
 		// Reserved words
 		st.put("in", TokenType.IN);

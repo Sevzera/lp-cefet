@@ -1,6 +1,6 @@
 /* "State machine" to recover tokens and discovers the syntax */
 
-package code.lexical;
+package lexical;
 
 import java.io.FileInputStream;		//Classe feita para manipular arquivos
 import java.io.PushbackInputStream; //Classe feita para ler os dados do arquivo alem de possuir mais funcoes

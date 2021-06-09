@@ -1,6 +1,6 @@
 /* List to set token types for easier maintece and upgrade of the system */
 
-package code.lexical;
+package lexical;
 
 public enum TokenType {
 	// Commands
@@ -61,7 +61,7 @@ public enum TokenType {
 	SQR_BRACKETS_OP,// [
 	SQR_BRACKETS_CL,// ]
 	COMMA,			// ,
-	POINT,			// .
+	DOT,			// .
 
 	// Reserved words
 	IN,				// for

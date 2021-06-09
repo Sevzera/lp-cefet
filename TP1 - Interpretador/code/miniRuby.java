@@ -1,8 +1,5 @@
-package code;
-// import code.lexical.Lexeme;
-import code.lexical.LexicalAnalysis;
-// import code.lexical.TokenType;
-import code.syntatic.SyntaticAnalysis;
+import lexical.LexicalAnalysis;
+import syntatic.SyntaticAnalysis;
 
 public class miniRuby {
     public static void main (String args[]) {

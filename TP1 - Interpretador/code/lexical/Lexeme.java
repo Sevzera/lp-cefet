@@ -1,4 +1,4 @@
-package code.lexical;
+package lexical;
 
 public class Lexeme {
 
