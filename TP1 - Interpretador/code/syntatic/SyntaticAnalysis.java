@@ -45,14 +45,14 @@ public class SyntaticAnalysis {
 
         switch (current.type) {
             case INVALID_TOKEN:
-                System.out.printf("Lexema inválido [%s]\n", current.token);
+                System.out.printf("Lexema invalido [%s]\n", current.token);
                 break;
             case UNEXPECTED_EOF:
             case END_OF_FILE:
                 System.out.printf("Fim de arquivo inesperado\n");
                 break;
             default:
-                System.out.printf("Lexema não esperado [%s]\n", current.token);
+                System.out.printf("Lexema nao esperado [%s]\n", current.token);
                 break;
         }
 
