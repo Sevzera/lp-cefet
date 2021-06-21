@@ -34,7 +34,7 @@ public class LexicalAnalysis implements AutoCloseable {
 		}
 	}
 
-	// Return the line that is beeign read at the moment
+	// Return the line that is being read at the moment
 	public int getLine() {
 		return this.line;
 	}
