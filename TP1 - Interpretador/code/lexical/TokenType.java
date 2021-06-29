@@ -29,8 +29,8 @@ public enum TokenType {
 	DIV,			// /
 	MOD, 			// % (only for integers)
 	POW, 			// **
-	INCL,			// ..  inclusive (ex: 3..5 = [3,4,5])
-	EXCL,			// ... exclusive (ex: 3...4 = [3,4])
+	RANGE_WITH,		// ..  inclusive (ex: 3..5 = [3,4,5])
+	RANGE_WITHOUT,	// ... exclusive (ex: 3...4 = [3,4])
 
 	// Logic Operands
 	EQUAL, 			// ==
@@ -56,10 +56,10 @@ public enum TokenType {
 	// Symbols
 	ASSIGN,			// = (min, max = max, min)
 	SEMI_COLON,		// ;
-	BRACKETS_OP,	// (
-	BRACKETS_CL,	// )
-	SQR_BRACKETS_OP,// [
-	SQR_BRACKETS_CL,// ]
+	OPEN_PAR,		// (
+	CLOSE_PAR,		// )
+	OPEN_BRA,		// [
+	CLOSE_BRA,		// ]
 	COMMA,			// ,
 	DOT,			// .
 

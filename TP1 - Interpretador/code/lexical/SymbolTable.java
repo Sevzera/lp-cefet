@@ -30,8 +30,8 @@ public class SymbolTable {
 		st.put("/", TokenType.DIV);
 		st.put("%", TokenType.MOD);
 		st.put("**", TokenType.POW);
-		st.put("..", TokenType.INCL);
-		st.put("...", TokenType.EXCL);
+		st.put("..", TokenType.RANGE_WITH);
+		st.put("...", TokenType.RANGE_WITHOUT);
 
 		// Logic Operands
 		st.put("==", TokenType.EQUAL);
@@ -57,10 +57,10 @@ public class SymbolTable {
 		// Symbols
 		st.put("=", TokenType.ASSIGN);
 		st.put(";", TokenType.SEMI_COLON);
-		st.put("(", TokenType.BRACKETS_OP);
-		st.put(")", TokenType.BRACKETS_CL);
-		st.put("[", TokenType.SQR_BRACKETS_OP);
-		st.put("]", TokenType.SQR_BRACKETS_CL);
+		st.put("(", TokenType.OPEN_PAR);
+		st.put(")", TokenType.CLOSE_PAR);
+		st.put("[", TokenType.OPEN_BRA);
+		st.put("]", TokenType.CLOSE_BRA);
 		st.put(",", TokenType.COMMA);
 		st.put(".", TokenType.DOT);
 
