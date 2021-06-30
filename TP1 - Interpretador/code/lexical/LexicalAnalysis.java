@@ -22,7 +22,7 @@ public class LexicalAnalysis implements AutoCloseable {
 		}
 
 		st = new SymbolTable();
-		line = 1;
+		this.line = 1;
 	}
 
 	// Close file
@@ -34,7 +34,7 @@ public class LexicalAnalysis implements AutoCloseable {
 		}
 	}
 
-	// Return the line that is being read at the moment
+	// Return the line that is beeign read at the moment
 	public int getLine() {
 		return this.line;
 	}

@@ -32,10 +32,11 @@ public class BinaryExpr extends Expr {
                     if (left instanceof IntegerValue && right instanceof IntegerValue) {
                         int lv = Integer.parseInt(left.toString());
                         int rv = Integer.parseInt(right.toString());
+                        //System.out.println(rv);
                         Vector<Value<?>> res = new Vector<Value<?>>();
                         
                         int i;
-                        for (i=lv; i<=rv; i++) {
+                        for (i=lv; i<=rv+1; i++) {
                             IntegerValue iv = new IntegerValue(i);
                             res.add(iv);
                         }
@@ -55,7 +56,7 @@ public class BinaryExpr extends Expr {
                         Vector<Value<?>> res = new Vector<Value<?>>();
                         
                         int i;
-                        for (i=lv; i<rv; i++) {
+                        for (i=lv; i<rv+1; i++) {
                             IntegerValue iv = new IntegerValue(i);
                             res.add(iv);
                         }
@@ -90,7 +91,7 @@ public class BinaryExpr extends Expr {
                         ArrayValue nav = new ArrayValue(res);
                         v = nav;
 
-                    } else {
+                    } else if (left instanceof StringValue && right instanceof StringValue) {
                         String lv = left.toString();
                         lv = lv.replace("\'", "");
                         String rv = right.toString();
@@ -100,6 +101,9 @@ public class BinaryExpr extends Expr {
                         value = cotes + value + cotes;
                         StringValue siv = new StringValue (value);
                         v = siv;
+
+                    } else {
+                        Utils.abort(super.getLine());
                     }
                 break;
 

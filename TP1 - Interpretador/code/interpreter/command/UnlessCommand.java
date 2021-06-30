@@ -1,4 +1,4 @@
-package interpreter.command;
+    package interpreter.command;
 
 import interpreter.expr.BoolExpr;
 
@@ -19,7 +19,9 @@ public class UnlessCommand extends Command{
         if(!(cond.expr())) {
             thenCmds.execute();
         } else {
-            elseCmds.execute();
+            if(elseCmds != null) {
+                elseCmds.execute();
+            }
         }
     }
 }

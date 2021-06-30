@@ -1,5 +1,7 @@
 package interpreter.expr;
 
+import java.util.Vector;
+
 import interpreter.util.Utils;
 import interpreter.value.ArrayValue;
 import interpreter.value.IntegerValue;
@@ -111,9 +113,17 @@ public class SingleBoolExpr extends BoolExpr{
                 break;
             case ContainsOp:
                     if (left instanceof IntegerValue && right instanceof ArrayValue) {
-
+                        //int lv = Integer.parseInt(left.toString());
+                        ArrayValue arv = (ArrayValue) right;
+                        Vector<Value<?> > rvec = arv.value();
+                        if (rvec.contains(left)) b = true;
+                        else b = false;
                     } else if (left instanceof StringValue && right instanceof ArrayValue) {
-
+                        //String lv = left.toString();
+                        ArrayValue arv = (ArrayValue) right;
+                        Vector<Value<?> > rvec = arv.value();
+                        if (rvec.contains(left)) b = true;
+                        else b = false;
                     } else {
                         Utils.abort(super.getLine());
                     }

@@ -2,12 +2,12 @@ package interpreter.command;
 
 import interpreter.expr.BoolExpr;
 
-public class WhileCommand extends Command{
+public class UntilCommand extends Command{
     
     private BoolExpr cond;
     private Command cmds;
 
-    public WhileCommand (int line, BoolExpr cond, Command cmds) {
+    public UntilCommand (int line, BoolExpr cond, Command cmds) {
         super(line);
         this.cmds = cmds;
         this.cond = cond;
@@ -15,7 +15,7 @@ public class WhileCommand extends Command{
 
     @Override
     public void execute() {
-        while (cond.expr()) {
+        while (!(cond.expr())) {
             cmds.execute();
         }
     }
