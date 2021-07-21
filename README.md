@@ -7,7 +7,7 @@
 
 
 INTERPRETADOR:
-* Compilação a partir da pasta code]
+* Compilação a partir da pasta code
 * ->  javac miniRuby.java -d classes
 * ->  java -cp classes miniRuby [source file] -> ./_examples/[source file]
 
