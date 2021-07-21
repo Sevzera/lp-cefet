@@ -11,5 +11,5 @@ INTERPRETADOR:
 * ->  javac miniRuby.java -d classes
 * ->  java -cp classes miniRuby [source file] -> ./_examples/[source file]
 
-PICARAI:
+PICARIA:
 * Construído a partir das especificações do Qt Creator
