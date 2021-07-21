@@ -17,11 +17,16 @@ public:
     };
     Q_ENUM(State)
 
+    int id;
+
     explicit Hole(QWidget *parent = nullptr);
     virtual ~Hole();
 
     State state() const { return m_state; }
-    void setState(State State);
+    void setState(State State);   
+    Hole *N, *S, *E, *W, *NE, *NW, *SE, *SW;
+    static void setCommonNeighbors(Hole* hole[]);
+    static void setModeNeighbors(Hole* hole[], int holeCount);
 
 public slots:
     void reset();

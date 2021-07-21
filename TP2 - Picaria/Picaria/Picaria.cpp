@@ -38,6 +38,7 @@ Picaria::Picaria(QWidget *parent)
     QObject::connect(ui->actionNew, SIGNAL(triggered(bool)), this, SLOT(reset()));
     QObject::connect(ui->actionQuit, SIGNAL(triggered(bool)), qApp, SLOT(quit()));
     QObject::connect(modeGroup, SIGNAL(triggered(QAction*)), this, SLOT(updateMode(QAction*)));
+    QObject::connect(modeGroup, SIGNAL(triggered(QAction*)), this, SLOT(setHoleModeNeighbors()));
     QObject::connect(this, SIGNAL(modeChanged(Picaria::Mode)), this, SLOT(reset()));
     QObject::connect(ui->actionAbout, SIGNAL(triggered(bool)), this, SLOT(showAbout()));
     QObject::connect(this, SIGNAL(gameOver(Picaria::Player)), this, SLOT(showGameOver()));
@@ -52,6 +53,8 @@ Picaria::Picaria(QWidget *parent)
         map->setMapping(hole, id);
         QObject::connect(hole, SIGNAL(clicked(bool)), map, SLOT(map()));
     }
+
+
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     QObject::connect(map, SIGNAL(mapped(int)), this, SLOT(play(int)));
 #else
@@ -60,6 +63,9 @@ Picaria::Picaria(QWidget *parent)
 
     this->reset();
 
+    Hole::setCommonNeighbors(this->m_holes);
+    Hole::setModeNeighbors(this->m_holes, 9);
+    this->previousHole = nullptr;
     this->adjustSize();
     this->setFixedSize(this->size());
 }
@@ -75,6 +81,13 @@ void Picaria::setMode(Picaria::Mode mode) {
     }
 }
 
+void Picaria::setHoleModeNeighbors(){
+    if(this->mode() == Picaria::NineHoles)
+        Hole::setModeNeighbors(this->m_holes, 9);
+    else
+        Hole::setModeNeighbors(this->m_holes, 13);
+}
+
 void Picaria::switchPlayer() {
     m_player = m_player == Picaria::RedPlayer ?
                 Picaria::BluePlayer : Picaria::RedPlayer;
@@ -84,13 +97,26 @@ void Picaria::switchPlayer() {
 void Picaria::play(int id) {
     Hole* hole = m_holes[id];
 
-    qDebug() << "clicked on: " << hole->objectName();
-
     if(this->m_phase == DropPhase){
         this->drop(hole);
         this->updateStatusBar();
     } else if(this->m_phase == MovePhase) {
-        this->move(hole);
+        if(hole->state() == player2state(m_player)){
+            this->previousHole = hole;
+            this->showSelectables(hole);
+        }
+        if(hole->state() == Hole::SelectableState){
+            hole->setState((player2state(this->m_player)));
+            if(this->previousHole != nullptr){
+                previousHole->setState(Hole::EmptyState);
+                previousHole = nullptr;
+            }
+            this->clearSelectables();
+            if(this->isGameOver())
+                emit gameOver(m_player);
+            else
+                this->switchPlayer();
+        }
         this->updateStatusBar();
     }
 
@@ -112,9 +138,39 @@ void Picaria::drop(Hole* hole) {
     }
 }
 
-void Picaria::move(Hole* hole){
-    if(hole->state() == player2state(m_player)){
+void Picaria::showSelectables(Hole* hole){
+    this->clearSelectables();
+    if (hole->N != nullptr)
+        if (hole->N->state() == Hole::EmptyState)
+            hole->N->setState(Hole::SelectableState);
+    if (hole->S != nullptr)
+        if (hole->S->state() == Hole::EmptyState)
+            hole->S->setState(Hole::SelectableState);
+    if (hole->E != nullptr)
+        if (hole->E->state() == Hole::EmptyState)
+            hole->E->setState(Hole::SelectableState);
+    if (hole->W != nullptr)
+        if (hole->W->state() == Hole::EmptyState)
+            hole->W->setState(Hole::SelectableState);
+    if (hole->NE != nullptr)
+        if (hole->NE->state() == Hole::EmptyState)
+            hole->NE->setState(Hole::SelectableState);
+    if (hole->NW != nullptr)
+        if (hole->NW->state() == Hole::EmptyState)
+            hole->NW->setState(Hole::SelectableState);
+    if (hole->SE != nullptr)
+        if (hole->SE->state() == Hole::EmptyState)
+            hole->SE->setState(Hole::SelectableState);
+    if (hole->SW != nullptr)
+        if (hole->SW->state() == Hole::EmptyState)
+            hole->SW->setState(Hole::SelectableState);
 
+}
+
+void Picaria::clearSelectables(){
+    for(int id = 0; id < 13; ++id){
+        if(this->m_holes[id]->state() == Hole::SelectableState)
+            this->m_holes[id]->setState(Hole::EmptyState);
     }
 }
 
