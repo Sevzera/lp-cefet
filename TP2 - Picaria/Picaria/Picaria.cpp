@@ -97,26 +97,11 @@ void Picaria::switchPlayer() {
 void Picaria::play(int id) {
     Hole* hole = m_holes[id];
 
-    if(this->m_phase == DropPhase){
+    if(this->m_phase == Picaria::DropPhase){
         this->drop(hole);
         this->updateStatusBar();
-    } else if(this->m_phase == MovePhase) {
-        if(hole->state() == player2state(m_player)){
-            this->previousHole = hole;
-            this->showSelectables(hole);
-        }
-        if(hole->state() == Hole::SelectableState){
-            hole->setState((player2state(this->m_player)));
-            if(this->previousHole != nullptr){
-                previousHole->setState(Hole::EmptyState);
-                previousHole = nullptr;
-            }
-            this->clearSelectables();
-            if(this->isGameOver())
-                emit gameOver(m_player);
-            else
-                this->switchPlayer();
-        }
+    } else if(this->m_phase == Picaria::MovePhase) {
+        this->move(hole);
         this->updateStatusBar();
     }
 
@@ -124,17 +109,36 @@ void Picaria::play(int id) {
 
 void Picaria::drop(Hole* hole) {
     if (hole->state() == Hole::EmptyState) {
-        hole->setState(player2state(m_player));
+        hole->setState(player2state(this->m_player));
 
         if (this->isGameOver()){
-            emit gameOver(m_player);
+            emit gameOver(this->m_player);
         }else {
             holeDropCounter++;
             if (holeDropCounter == 6)
-                m_phase = MovePhase;
+                m_phase = Picaria::MovePhase;
 
             this->switchPlayer();
         }
+    }
+}
+
+void Picaria::move(Hole* hole){
+    if(hole->state() == player2state(this->m_player)){
+        this->previousHole = hole;
+        this->showSelectables(hole);
+    }
+    if(hole->state() == Hole::SelectableState){
+        hole->setState((player2state(this->m_player)));
+        if(this->previousHole != nullptr){
+            previousHole->setState(Hole::EmptyState);
+            previousHole = nullptr;
+        }
+        this->clearSelectables();
+        if(this->isGameOver())
+            emit gameOver(this->m_player);
+        else
+            this->switchPlayer();
     }
 }
 
@@ -175,12 +179,10 @@ void Picaria::clearSelectables(){
 }
 
 void Picaria::reset() {
-    // Reset each hole.
     for (int id = 0; id < 13; ++id) {
         Hole* hole = m_holes[id];
         hole->reset();
 
-        // Set the hole visibility according to the board mode.
         switch (id) {
         case 3:
         case 4:
@@ -193,80 +195,31 @@ void Picaria::reset() {
         }
     }
 
-    // Reset the player and phase.
     this->holeDropCounter = 0;
     m_player = Picaria::RedPlayer;
     m_phase = Picaria::DropPhase;
 
-    // Finally, update the status bar.
     this->updateStatusBar();
 }
 
 bool Picaria::isGameOver(){
-    if(m_holes[0]->state() == player2state(m_player)){
-        if(m_holes[1]->state() == player2state(m_player) && m_holes[2]->state() == player2state(m_player)){
-            return true;
-        } else if(m_holes[5]->state() == player2state(m_player) && m_holes[10]->state() == player2state(m_player)){
-            return true;
-        }
-    }
-    if(m_holes[12]->state() == player2state(m_player)){
-        if(m_holes[7]->state() == player2state(m_player) && m_holes[2]->state() == player2state(m_player)){
-            return true;
-        } else if(m_holes[11]->state() == player2state(m_player) && m_holes[10]->state() == player2state(m_player)){
-            return true;
-        }
-    }
-    if(m_holes[6]->state() == player2state(m_player)){
-        if(m_holes[5]->state() == player2state(m_player) && m_holes[7]->state() == player2state(m_player)){
-            return true;
-        } else if(m_holes[1]->state() == player2state(m_player) && m_holes[11]->state() == player2state(m_player)){
-            return true;
-        }
-    }
-    if(this->mode() == Picaria::NineHoles){
-        if(m_holes[6]->state() == player2state(m_player)){
-            if(m_holes[0]->state() == player2state(m_player) && m_holes[12]->state() == player2state(m_player)){
-                return true;
-            } else if(m_holes[2]->state() == player2state(m_player) && m_holes[10]->state() == player2state(m_player)){
-                return true;
-            }
-        }
-    } else if(this->mode() == Picaria::ThirteenHoles){
-        if(m_holes[6]->state() == player2state(m_player)){
-            if(m_holes[3]->state() == player2state(m_player) && m_holes[9]->state() == player2state(m_player)){
-                return true;
-            } else if(m_holes[4]->state() == player2state(m_player) && m_holes[8]->state() == player2state(m_player)){
-                return true;
-            }
-        }
-        if(m_holes[3]->state() == player2state(m_player)){
-            if(m_holes[0]->state() == player2state(m_player) && m_holes[6]->state() == player2state(m_player)){
-                return true;
-            } else if(m_holes[1]->state() == player2state(m_player) && m_holes[5]->state() == player2state(m_player)){
-                return true;
-            }
-        }
-        if(m_holes[4]->state() == player2state(m_player)){
-            if(m_holes[1]->state() == player2state(m_player) && m_holes[7]->state() == player2state(m_player)){
-                return true;
-            } else if(m_holes[2]->state() == player2state(m_player) && m_holes[6]->state() == player2state(m_player)){
-                return true;
-            }
-        }
-        if(m_holes[8]->state() == player2state(m_player)){
-            if(m_holes[5]->state() == player2state(m_player) && m_holes[11]->state() == player2state(m_player)){
-                return true;
-            } else if(m_holes[6]->state() == player2state(m_player) && m_holes[10]->state() == player2state(m_player)){
-                return true;
-            }
-        }
-        if(m_holes[9]->state() == player2state(m_player)){
-            if(m_holes[6]->state() == player2state(m_player) && m_holes[12]->state() == player2state(m_player)){
-                return true;
-            } else if(m_holes[7]->state() == player2state(m_player) && m_holes[11]->state() == player2state(m_player)){
-                return true;
-            }
+    for(int id = 0; id < 13; ++id){
+        if(this->m_holes[id]->state() == player2state(m_player)){
+            if(this->m_holes[id]->N != nullptr && this->m_holes[id]->S != nullptr)
+                if(this->m_holes[id]->N->state() == player2state(m_player) && this->m_holes[id]->S->state() == player2state(m_player))
+                    return true;
+
+            if(this->m_holes[id]->E != nullptr && this->m_holes[id]->W != nullptr)
+                if(this->m_holes[id]->E->state() == player2state(m_player) && this->m_holes[id]->W->state() == player2state(m_player))
+                    return true;
+
+            if(this->m_holes[id]->NE != nullptr && this->m_holes[id]->SW != nullptr)
+                if(this->m_holes[id]->NE->state() == player2state(m_player) && this->m_holes[id]->SW->state() == player2state(m_player))
+                    return true;
+
+            if(this->m_holes[id]->NW != nullptr && this->m_holes[id]->SE != nullptr)
+                if(this->m_holes[id]->NW->state() == player2state(m_player) && this->m_holes[id]->SE->state() == player2state(m_player))
+                    return true;
         }
     }
     return false;
@@ -279,7 +232,7 @@ void Picaria::showGameOver() {
 }
 
 void Picaria::showAbout() {
-    QMessageBox::information(this, tr("About"), tr("Picaria\n\nArthur Severo de Souza - svzr.47@gmail.com\nVictor Le Roy Matos - victorlrmatos@gmail.com"));
+    QMessageBox::information(this, tr("Sobre"), tr("Picaria\n\nArthur Severo de Souza - svzr.47@gmail.com\nVictor Le Roy Matos - victorlrmatos@gmail.com"));
 }
 
 void Picaria::updateMode(QAction* action) {

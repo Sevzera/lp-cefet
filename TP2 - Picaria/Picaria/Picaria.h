@@ -47,14 +47,15 @@ signals:
 private:
     Ui::Picaria *ui;
     int holeDropCounter = 0;
-    Hole* m_holes[13];
     Hole* previousHole;
+    Hole* m_holes[13];
     Mode m_mode;
     Player m_player;
     Phase m_phase;
 
     void switchPlayer();
     void drop(Hole* hole);
+    void move(Hole* hole);
     void showSelectables(Hole* hole);
     void clearSelectables();
     bool isGameOver();
