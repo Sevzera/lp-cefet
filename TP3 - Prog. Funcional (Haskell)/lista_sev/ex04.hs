@@ -1,4 +1,5 @@
 module Main where
+
 list :: [Integer]
 list = [-3, 1, 0, -5, -4, 2]
 
